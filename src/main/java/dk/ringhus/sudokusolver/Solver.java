@@ -5,44 +5,46 @@ public class Solver {
     // GRIDSIZE, is used to registrate how big a sudoku is, when set to 9, its a 9x9 sudoku
     private final int GRIDSIZE = 9;
 
+    private static int runCounter = 0;
+
     // Check if the number already exist in the column.
     // if not return false, if yes, return true.
-    private boolean checkIfNUmberIsInCol( int[][] board, int col, int number ) {
+    private boolean canNumberBeInColumn(int[][] board, int col, int number ) {
         for (int i = 0; i < GRIDSIZE; i++) {
             if( board[i][col] == number ) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 
     // Check if the number already exist in the row.
     // if not return false, if yes, return true.
-    private boolean checkIfNumberIsInRow( int[][] board, int row, int number) {
+    private boolean canNumberBeInRow(int[][] board, int row, int number) {
         for (int i = 0; i < this.GRIDSIZE; i++) {
             if( board[row][i] == number ) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
 
     // Check if the number already exist in the box.
     // if not return false, if yes return true.
-    private boolean checkIfNUmberIsInBox( int[][] board, int row, int col, int number ) {
+    private boolean canNumberBeInBox(int[][] board, int row, int col, int number ) {
          int boxRow = row - row % 3;
          int boxCol = col - col % 3;
 
          for( int i = boxRow ; i < (boxRow+3) ; i++ ) {
-             for (int j = boxCol; j < (boxCol+3); j++) {
+                 for (int j = boxCol; j < (boxCol+3); j++) {
                  if( board[i][j] == number ) {
-                     return true;
+                     return false;
                  }
              }
          }
-         return false;
+         return true;
     }
 
 
@@ -51,9 +53,11 @@ public class Solver {
 
     // Simple method, that checks all 3 above methods. in once.
     private boolean isPlacementValid( int[][] board, int row, int col, int number ) {
-        return !checkIfNUmberIsInCol(board, col, number) &&
-                !checkIfNumberIsInRow(board, row, number) &&
-                !checkIfNUmberIsInBox(board, row, col, number);
+        if( canNumberBeInColumn(board, col, number) && canNumberBeInRow(board, row, number) && canNumberBeInBox(board, row, col, number) ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -67,6 +71,7 @@ public class Solver {
                     for( int tryNumber = 1 ; tryNumber <= GRIDSIZE ; tryNumber++ ) {
                         if( isPlacementValid( board, row, col, tryNumber )) {
                             board[row][col] = tryNumber;
+                            System.out.println("Jeg har sat et nummer " + runCounter++ + " antal gange");
 
                             if( Solver( board ) ) {
                                 return true;
