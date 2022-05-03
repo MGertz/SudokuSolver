@@ -71,7 +71,7 @@ public class Solver {
                     for( int tryNumber = 1 ; tryNumber <= GRIDSIZE ; tryNumber++ ) {
                         if( isPlacementValid( board, row, col, tryNumber )) {
                             board[row][col] = tryNumber;
-                            System.out.println("Jeg har sat et nummer " + runCounter++ + " antal gange");
+                            System.out.println("Jeg har sat et nummer " + ++runCounter + " antal gange");
 
                             if( Solver( board ) ) {
                                 return true;
